@@ -1,0 +1,85 @@
+config.vm.synced_folder "/var/www/root/source-api", "~/www/root/source-api"
+config.vm.synced_folder "/var/www/root/source-client", "~/www/root/source-client"
+
+//ABOVE TWO LINES ALLOW TO SHER FOLDER BETWEEN HOST COMPUTER AND AND VIRTUALBOX
+-means...going to edit source code on host machine and it will be executed on VM
+1st paramater  "/var/www/root/source-api" (var/www in our linux) folder we want share on our host machine
+2nd paramater "~/www/root/source-api" (www/root/ in our home linux folder) the path of the shared folder insite the VM
+
+***********************************************************************************************************************
+config.vm.box = "myVM"
+
+//THE NAME OF OUR VIRTUAL MACHINE
+
+***********************************************************************************************************************
+config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+
+//THIS IS USED BY VAGRANT TO DOWNLOAD THE BASE OPARATING SYSTEM IN CASE YOU DON'T HAVE IT
+
+***********************************************************************************************************************
+config.vm.network :private_network, ip: "192.168.56.2"
+
+//IP THAT HTE VM WILL HAVE ON OUR SUBNETWORK
+-fi you have multiple VM's in the same subnetwork you must adapt the given value to sssign a new IP
+
+***********************************************************************************************************************
+config.vm.provider :virtualbox do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "1024"]
+  end
+
+//RAM MEMORY WE ASSIGN FROM OUR HOST TO THE VM
+
+***********************************************************************************************************************
+NETWORK ADAPTERS - WE USE NATWHICH CONNECT VM TO THE INTERNET USING OUR COMPUTER AS A ROUTER
+THE HOST-ONLY INTERFACE WILL CONNECT OUR COMPUTER AND VM USING A SUBNETWORK - ALLOW TO HAVE STATIC IP FOR VM
+WITHOUT HAVING TO RELY ON OUR ROUTER AND WITHOUT CONSUMING AN IP OF OUR MAIN NETWORK
+***********************************************************************************************************************
+ config.vm.provision :chef_solo do |chef|
+ chef.cookbooks_path = "./cookbooks"
+
+     chef.add_recipe "apt"
+     chef.add_recipe "custom::dotdeb"
+     chef.add_recipe "mysql::server"
+     chef.add_recipe "nginx"
+     chef.add_recipe "php"
+     chef.add_recipe "php-fpm"
+     chef.add_recipe "custom::fpm-config"
+     chef.add_recipe "php::module_curl"
+     chef.add_recipe "php::module_gd"
+     chef.add_recipe "php::module_mysql"
+     chef.add_recipe "postfix"
+     chef.add_recipe "custom::db"
+     chef.add_recipe "custom::hosts"
+     chef.add_recipe "custom::vhosts"
+     chef.add_recipe "custom::mysql_permissions"
+     chef.add_recipe "custom::restart_services"
+//VAGRANT USING PIECE OF SOFTWARE -CHEF TO MAKE THE CHANGES ON THE VM
+ RECIPES EXPLAIN TO CHEF HOW THE SOFTWARE GETS INSTALLED ON THE SYSTEM AND TO DESCRIBE TO CHEF HOW WE WANT CERTAIN CONFIGURATIONS
+ ***********************************************************************************************************************
+ chef.json = {
+       :mysql => {
+         :server_root_password => "root",    //SETING UP MYSQL PASSWORD
+         :server_repl_password => "repl",
+         :server_debian_password => "debian",
+         :bind_address => '0.0.0.0'
+       },
+       :nginx => {
+         :default_site_enabled => false
+       },
+       :php => {
+         :directives => {
+           'pdo_mysql.default_socket' => '/var/run/mysqld/mysqld.sock',
+           'mysql.default_socket' => '/var/run/mysqld/mysqld.sock',
+           'mysqli.default_socket' => '/var/run/mysqld/mysqld.sock',
+           'date.timezone' => 'Europe/London'
+         }
+       }
+     }
+
+//SET UP CONFIGURATION VARIABLES FOR THE CHEF
+ ***********************************************************************************************************************
+ USING HOST-ONLY ADAPTER WE SHOULD SET UP A SUBNET BETWEEN COMPUTER->VM:
+ -OPEN VIRTUALBOX/PREFERENCES/NETWORK/ADD(SUBNET)
+ -CHECK IF IPV4 IS "192.168.56.1"
+ -CHECK IF NETWORK MASK IS "255.255.255.0"
+ -SAVE
