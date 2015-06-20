@@ -1,0 +1,32 @@
+1. Create a new folder to store the code from the book, this can be in your Documents folder, home folder, or even on the Desktop.
+
+Valles, Christopher (2013-10-25). Zend Framework 2 Application Development (p. 14). Packt Publishing. Kindle Edition. 
+
+
+2. After that, open terminal if you're on Mac/ Linux; open git bash if you're on Windows.
+
+Valles, Christopher (2013-10-25). Zend Framework 2 Application Development (p. 14). Packt Publishing. Kindle Edition. 
+
+3. Navigate to the folder you just created using the cd command.
+
+Valles, Christopher (2013-10-25). Zend Framework 2 Application Development (p. 14). Packt Publishing. Kindle Edition. 
+
+4. Get a copy of the Vagrant scripts by executing the following command: git clone https:// github.com/ christophervalles/ ZF2-Vagrant.git
+
+Valles, Christopher (2013-10-25). Zend Framework 2 Application Development (p. 14). Packt Publishing. Kindle Edition. 
+
+5. After getting a copy of the files, we need to execute a command inside the folder we just cloned. To do that, first enter that folder using the cd command. In my case, it looks like the following command: cd ZF2-Vagrant
+
+Valles, Christopher (2013-10-25). Zend Framework 2 Application Development (p. 14). Packt Publishing. Kindle Edition. 
+
+6. We need to initialize the sub modules by executing the following command: git submodule update --init --recursive
+
+Valles, Christopher (2013-10-25). Zend Framework 2 Application Development (p. 15). Packt Publishing. Kindle Edition. 
+
+7. After initializing the submodules, open the contents of the folder with your favorite text editor.
+
+Valles, Christopher (2013-10-25). Zend Framework 2 Application Development (p. 15). Packt Publishing. Kindle Edition. 
+
+8.We need to adapt the configuration values of Vagrantfile to suit your system. The instructions can be found in the following section.
+
+Valles, Christopher (2013-10-25). Zend Framework 2 Application Development (p. 15). Packt Publishing. Kindle Edition. 
